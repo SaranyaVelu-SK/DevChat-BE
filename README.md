@@ -15,6 +15,9 @@
 ### Key Features:
 - MongoDB-based Scalable Data Storage
 - Role-based Access Control (Admins, Users)
+- Mongoose schema types and validations
+- Bcrypt password encryptions
+
 ---
 
 ### Knowledge Base:
@@ -22,5 +25,11 @@
 - route and route handlers
 - middlewares and error handlers
 - database connection
+- Apis
+- Data Sanitization
+- Schema Validation
+- prevents certain field updates
+- Custom Validation
+- password Encryption
 
 ---
