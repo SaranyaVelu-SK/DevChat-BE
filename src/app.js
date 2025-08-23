@@ -4,9 +4,13 @@ const bcrypt = require('bcrypt');
 const validator = require('validator')
 const { connectToDB } = require('./Config/database')
 const { UserModel } = require('./Models/userModel')
-const { signupValidation } = require('./helpers/signUpValidation')
+const { signupValidation } = require('./helpers/signUpValidation');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const { userAuth } = require('./Middlewares/auth');
 
-app.use(express.json())
+app.use(express.json());
+app.use(cookieParser());
 app.post('/signUp', async (req, res) => {
     try {
         const validatedData = signupValidation(req.body);
@@ -71,6 +75,13 @@ app.patch('/updateUser', async (req, res) => {
     }
 })
 
+app.get('/profile',userAuth, async (req, res) => {
+ const userData = req.userData;
+ console.log(userData);
+ res.send(userData)
+    
+})
+
 app.get('/signIn', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -79,8 +90,10 @@ app.get('/signIn', async (req, res) => {
             userData = await UserModel.findOne({ email: email });
         }
         if (userData) {
-            let user = await bcrypt.compare(password, userData.password);
-            if (user) {
+            let isValidPassword = await userData.compareUserPassword;
+            if (isValidPassword) {
+                const token = await userData.getJWT();
+                res.cookie("jwtToken", token,{expires: new Date(Date.now() + (5 * 24 * 3600000))})   //5 days
                 res.send("signin successfully")
             } else {
                 throw new Error("wrong credentials")
@@ -92,6 +105,10 @@ app.get('/signIn', async (req, res) => {
     }
 })
 
+app.post("/sendConnectionReq",userAuth,async(req,res)=>{
+ const userData = req.userData;
+ res.send(userData.firstName + " has sent the connection request")
+})
 connectToDB().then(() => {
     console.log("database connected successfully");
     app.listen(3000, () => {

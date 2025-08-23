@@ -17,7 +17,8 @@
 - Role-based Access Control (Admins, Users)
 - Mongoose schema types and validations
 - Bcrypt password encryptions
-
+- user authentication with jwt
+- cookies with expiration
 ---
 
 ### Knowledge Base:
@@ -31,5 +32,6 @@
 - prevents certain field updates
 - Custom Validation
 - password Encryption
-
+- creating json web token and cookies
+- mongoose schema methods
 ---

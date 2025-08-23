@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require("validator");
-
+const jwt =require('jsonwebtoken');
+require('dotenv').config();
+const bcrypt = require('bcrypt')
 const userSchema = new mongoose.Schema(
     {
         firstName:{            //firstName:String ===> firstName:{type:String}
@@ -67,6 +69,20 @@ const userSchema = new mongoose.Schema(
     {
         collection : 'user'   //explicitly adding the collection name from mongoDB to this schema
     });
+
+    userSchema.methods.getJWT = async function(){             // never use arrow function strictly
+        const user = this;
+
+        const jwtToken = await jwt.sign({_id:user._id},process.env.JWT_PRIVATE_KEY);
+        return jwtToken;
+    }
+
+    userSchema.methods.compareUserPassword = async function(userGivenPassword){
+        const passwordInDb = this.password
+        const isPasswordMatched = await bcrypt.compare(userGivenPassword, passwordInDb);
+
+        return isPasswordMatched;
+    }
 
    const UserModel = mongoose.model("User",userSchema);
 

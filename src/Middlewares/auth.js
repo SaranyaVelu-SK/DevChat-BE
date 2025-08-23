@@ -1,20 +1,24 @@
-const adminAuth = (req,res,next)=>{
- let token ="abs";
- let isAdminAuthorized = token === "abs"
- if(isAdminAuthorized){
-    console.log("authorized!");
-    next();
- }else{res.status(401).send("unauthorized access")}
+require('dotenv').config();
+const jwt = require('jsonwebtoken');
+const { UserModel } = require('../Models/userModel');
+const userAuth = async (req, res, next) => {
+   try {
+      const { jwtToken } = req.cookies;
+      if (!jwtToken) {
+         throw new Error("Not a valid token")
+      }
+      const decodedTokenData = await jwt.verify(jwtToken, process.env.JWT_PRIVATE_KEY);
+      const userData = await UserModel.findById(decodedTokenData._id);
+      if (!userData) {
+         throw new Error("User not found")
+      }
+      req.userData = userData;
+      next();
+   } catch (err) {
+      res.status(400).send(err.message);
+      console.log(err)
+   }
 }
-const userAuth = (req,res,next)=>{
- let token ="abx";
- let isUserAuthorized = token === "abx"
- if(isUserAuthorized){
-    console.log("authorized!");
-    next();
- }else{res.status(401).send("unauthorized access")}
-}
-module.exports={
-    adminAuth,
-    userAuth
+module.exports = {
+   userAuth
 }
