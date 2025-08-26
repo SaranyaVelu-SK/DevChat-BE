@@ -5,7 +5,7 @@ const userAuth = async (req, res, next) => {
    try {
       const { jwtToken } = req.cookies;
       if (!jwtToken) {
-         throw new Error("Not a valid token")
+         throw new Error("No token available")
       }
       const decodedTokenData = await jwt.verify(jwtToken, process.env.JWT_PRIVATE_KEY);
       const userData = await UserModel.findById(decodedTokenData._id);

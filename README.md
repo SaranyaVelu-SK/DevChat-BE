@@ -19,6 +19,7 @@
 - Bcrypt password encryptions
 - user authentication with jwt
 - cookies with expiration
+- organize related routes with express router
 ---
 
 ### Knowledge Base:
@@ -34,4 +35,5 @@
 - password Encryption
 - creating json web token and cookies
 - mongoose schema methods
+- express.Router()
 ---
