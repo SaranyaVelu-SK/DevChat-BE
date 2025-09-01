@@ -26,7 +26,7 @@ connectionSchema.pre("save",function(next){     //never use arrow function
         
        throw new Error(`you can't send connection request to yourself !`)
     }
-    next();
+    next(); //next() not similar to the one in express (req,res,next)
 })
 connectionSchema.index({senderUserId:1,receiverUserId:1})
 const connectionModel = new mongoose.model("Connection",connectionSchema);
