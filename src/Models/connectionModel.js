@@ -1,18 +1,24 @@
 const mongoose =require('mongoose');
+const { UserModel } = require('./userModel');
 
 const connectionSchema = new mongoose.Schema({
     senderUserId:{
-        type:mongoose.Schema.Types.ObjectId
+        type:mongoose.Schema.Types.ObjectId,
+        ref:UserModel,
+        required:true
     },
     receiverUserId:{
-        type:mongoose.Schema.Types.ObjectId
+        type:mongoose.Schema.Types.ObjectId,
+        ref:UserModel,
+        required:true
     },
     status:{
         type:String,
         enum:{
             values:["interested","ignored","accepted","rejected"],
             message:'{VALUE} is not a valid status'
-        }
+        },
+        required:true
     }
 },
 {
