@@ -21,15 +21,15 @@ app.use('/',requestRouter);
 app.use('/',userRouter);
 
 
-app.get('/feed', async (req, res) => {
-    try {
-        const usersFeed = await UserModel.find({});
-        res.send(usersFeed)
-    } catch (err) {
-        res.status(400).send(err.message);
-        console.log(err)
-    }
-})
+// app.get('/feed', async (req, res) => {
+//     try {
+//         const usersFeed = await UserModel.find({});
+//         res.send(usersFeed)
+//     } catch (err) {
+//         res.status(400).send(err.message);
+//         console.log(err)
+//     }
+// })
 
 app.get('/getUser', async (req, res) => {
     const email = req.body.email;
